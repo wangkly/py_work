@@ -10,5 +10,5 @@ def writeFile(targetWb,data,factor=0):
         #计算出新key
         newkey = str(code) + str(int(num) + factor * 7)
         print(newkey,v)
-        nanjing[newkey] = Decimal(str(v)) / Decimal('-10000')
+        nanjing[newkey] = Decimal(str(v)) / Decimal('10000')
     return
