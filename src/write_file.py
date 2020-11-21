@@ -9,6 +9,6 @@ def writeFile(targetWb,data,factor=0):
         num = k[1:] #剩余字符 excel 行
         #计算出新key
         newkey = str(code) + str(int(num) + factor * 7)
-        print(newkey,v)
+        # print(newkey,v)
         nanjing[newkey] = Decimal(str(v)) / Decimal('10000')
     return

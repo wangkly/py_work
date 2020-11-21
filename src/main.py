@@ -37,7 +37,6 @@ def entry(workbook,name):
         aTotal = Decimal('0')
         for row in rows:
             akey = str(column)+str(row)
-            print(akey,nanjing[akey])
             aTotal +=  Decimal(str( nanjing[akey].value ))  #C6，C7,C8,C9,C10,C11 
         nanjing[str(column)+'29'] = aTotal
 
@@ -46,6 +45,6 @@ def entry(workbook,name):
     # for k,v in d6.items():
     #     print(k,v)
     print('结束')
-    return
+    return 1
 
 # entry(wb,'10月')
