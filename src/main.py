@@ -40,6 +40,35 @@ def entry(workbook,name):
             aTotal +=  Decimal(str( nanjing[akey].value ))  #C6，C7,C8,C9,C10,C11 
         nanjing[str(column)+'29'] = aTotal
 
+    # 短险赔付率
+    getcontext().prec = 4
+    Q6 = Decimal(str(nanjing['L6'].value))  / Decimal(str(nanjing['J6'].value))
+    nanjing['Q6'] = str(Q6 * Decimal(100))+'%'
+    
+    Q7 = Decimal(str(nanjing['L7'].value)) / Decimal(str(nanjing['J7'].value))
+    nanjing['Q7'] = str(Q7 * Decimal(100))+'%'
+
+    Q12 = (Decimal(str(nanjing['L6'].value)) + Decimal(str(nanjing['L7'].value)))/ (Decimal(str(nanjing['J6'].value)) + Decimal(str(nanjing['J7'].value)))
+    nanjing['Q12'] = str(Q12 * Decimal(100))+'%'
+
+    Q13 = Decimal(str(nanjing['L13'].value)) / Decimal(str(nanjing['J13'].value))
+    nanjing['Q13'] = str(Q13 * Decimal(100))+'%'
+
+    Q14 = Decimal(str(nanjing['L14'].value)) / Decimal(str(nanjing['J14'].value))
+    nanjing['Q14'] = str(Q14 * Decimal(100))+'%'
+
+    Q19 = (Decimal(str(nanjing['L13'].value)) + Decimal(str(nanjing['L14'].value)))/ (Decimal(str(nanjing['J13'].value)) + Decimal(str(nanjing['J14'].value)))
+    nanjing['Q19'] = str(Q19 * Decimal(100))+'%'
+
+    Q20 = Decimal(str(nanjing['L20'].value)) / Decimal(str(nanjing['J20'].value))
+    nanjing['Q20'] = str(Q20 * Decimal(100))+'%'
+    
+    Q21 = Decimal(str(nanjing['L21'].value)) / Decimal(str(nanjing['J21'].value))
+    nanjing['Q21'] = str(Q21 * Decimal(100))+'%'
+
+    Q26 = (Decimal(str(nanjing['L20'].value)) + Decimal(str(nanjing['L21'].value)))/ (Decimal(str(nanjing['J20'].value)) + Decimal(str(nanjing['J21'].value)))
+    nanjing['Q26'] = str(Q26 * Decimal(100))+'%'
+
     template.save('test.xlsx')
 
     # for k,v in d6.items():
@@ -47,4 +76,4 @@ def entry(workbook,name):
     print('结束')
     return 1
 
-# entry(wb,'10月')
+entry(wb,'10月')
