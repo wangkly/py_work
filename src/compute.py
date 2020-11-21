@@ -1,3 +1,5 @@
+from decimal import *
+getcontext().prec = 28
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from gongsi import gongsi_filter
@@ -77,6 +79,14 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     # print('I6',I6)
     resultDict['I6']=I6
 
+    #小计
+    F6 = Decimal(str(total)) + Decimal(str(xuqiTotal))
+    resultDict['F6'] = F6
+
+    #本年 小计
+    J6 = Decimal(str(G6)) + Decimal(str(I6))
+    resultDict['J6'] = J6
+
     ##########################   意外伤害险 ############################
     yiwaiOptins=['9']
     yiwaiFilterd = list(filter(outer_filter(yiwaiOptins,xianzhongIndex),lirunFilterd))
@@ -109,6 +119,12 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     yiwaiXQY = sum(list(map(qimo,yiwaiXQFilterd)))
     # print('I7',yiwaiXQY)
     resultDict['I7'] = yiwaiXQY
+    #小计
+    F7 = Decimal(str(yiwaiTotal)) + Decimal(str(yiwaiXQ))
+    resultDict['F7'] = F7
+    #本年 小计
+    J7 = Decimal(str(G7)) + Decimal(str(yiwaiXQY))
+    resultDict['J7'] = J7
 
 
     ######################   一般寿险  ###################
@@ -146,6 +162,12 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     yibanXQY = sum(list(map(qimo,yibanXQFilterd)))
     # print('I8',yibanXQY)
     resultDict['I8'] = yibanXQY
+    #小计
+    F8 = Decimal(str(yibanTotal)) + Decimal(str(yibanXQ))
+    resultDict['F8'] = F8
+    #本年 小计
+    J8 = Decimal(str(yibanY)) + Decimal(str(yibanXQY))
+    resultDict['J8'] = J8
 
 
     ##################################   分红类保险（银保才有）###################
@@ -176,6 +198,12 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     #续期 本年
     fhXQY = sum(list(map(qimo,fhXQFilterd)))
     resultDict['I9'] = fhXQY
+    #小计
+    F9 = Decimal(str(fenhongTotal)) + Decimal(str(fhXQ))
+    resultDict['F9'] = F9
+    #本年 小计
+    J9 = Decimal(str(G9)) + Decimal(str(fhXQY))
+    resultDict['J9'] = J9
 
 
     ############################  万能寿险  ######################
@@ -204,7 +232,26 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     #续期 本年
     wnXQY = sum(list(map(qimo,wnXQFilterd)))
     resultDict['I10'] = wnXQY
+    #小计
+    F10 = Decimal(str(wnTotal)) + Decimal(str(wnXQ))
+    resultDict['F10'] = F10
+    #本年 小计
+    J10 = Decimal(str(G10)) + Decimal(str(wnXQY))
+    resultDict['J10'] = J10
 
+    #计算各种小计
+    columns = ['C','D','E','F','G','H','I','J']
+    rows = [6,7,8,9,10,11]
+    for column in columns:
+        aTotal = Decimal('0')
+        for row in rows:
+            akey = str(column)+str(row)
+            aTotal +=  Decimal(str( resultDict.get(akey,0) ))  #C6，C7,C8,C9,C10,C11 
+        resultDict[str(column)+'12'] = aTotal
 
-    return resultDict
+    resultCopy={}
+    for k,v in resultDict.items():
+        resultCopy[str(k)] = Decimal(str(v)) / Decimal('-1') #取反
+
+    return resultCopy
 

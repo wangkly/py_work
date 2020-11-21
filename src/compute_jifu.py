@@ -1,3 +1,5 @@
+from decimal import *
+getcontext().prec = 28
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from gongsi import gongsi_filter
@@ -214,6 +216,16 @@ def computeJF(worksheet,lirunType,companyCode = '1900'):
     #理赔 意外 小计
     P10 = sum(list(map(qimo,tuibaoWN)))
     resultDict['P10'] = P10
+
+    #计算各种小计
+    columns = ['K','L','M','N','O','P']
+    rows = [6,7,8,9,10,11]
+    for column in columns:
+        aTotal = Decimal('0')
+        for row in rows:
+            akey = str(column)+str(row)
+            aTotal +=  Decimal(str( resultDict.get(akey,0) ))  #C6，C7,C8,C9,C10,C11 
+        resultDict[str(column)+'12'] = aTotal
 
 
     return resultDict
