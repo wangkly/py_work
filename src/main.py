@@ -7,11 +7,12 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 from write_file import writeFile
 
-wb = load_workbook('/Users/wangkly/py_work/xuTest/src/辅助余额表.xlsx')
-template = load_workbook('/Users/wangkly/py_work/xuTest/src/template.xlsx')
+# wb = load_workbook('./src/辅助余额表.xlsx')
+# template = load_workbook('./src/template.xlsx')
 
-def entry(workbook,name):
+def entry(workbook,dest,name):
     worksheet = workbook[str(name)]
+    template = load_workbook(str(dest))
     #保费收入（正的就是负的，负的就是正的）
     d1 = compute(worksheet,['PC10'])
     writeFile(template,d1,0)
@@ -76,4 +77,4 @@ def entry(workbook,name):
     print('结束')
     return 1
 
-entry(wb,'10月')
+# entry(wb,'10月')

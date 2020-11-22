@@ -1,0 +1,1 @@
+ pyinstaller -F -w open_file.py main.py gongsi.py compute.py compute_jifu.py options_filter.py qimo.py rowsum.py write_file.py
