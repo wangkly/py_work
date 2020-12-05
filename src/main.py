@@ -35,6 +35,7 @@ def entry(workbook,dest,name,gongsi):
     targetSheet = template['南京'] #ws
     # targetSheet = template[str(gongsi)] #ws
     columns = list(string.ascii_uppercase[2:16])
+    columns.append('T')
     rows = [12,19,26]
     for column in columns:
         aTotal = Decimal('0')

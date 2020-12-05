@@ -28,10 +28,18 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     kemuOptins =['6031010001','6031010002','6031030000','6031050000']
     kemuFilterd = list(filter(outer_filter(kemuOptins,kemuIndex),gongsiFilterd))
 
+    #累计新单规模保费
+    # names = ['保费收入-首年首期','保费收入-首年首期（旧准则）','保费收入－首年续期','保费收入－首年续期(旧准则)','保费收入-保全','保费收入-保全(旧准则)','保费收入-团体短期意外险保费收入']
+    leijixindanOptions = ['6031010001','W031010001','6031010002','W031010002','6031030000','W031030000','6031050000']
+    ljxdFilterd = list(filter(outer_filter(leijixindanOptions,kemuIndex),gongsiFilterd))
+
     #利润中心描述筛选 
     lirunIndex = row0.index('利润中心')
     lirunOptins=lirunType 
     lirunFilterd = list(filter(outer_filter(lirunOptins,lirunIndex),kemuFilterd))
+
+    #累计新单
+    ljxdLRFilterd = list(filter(outer_filter(lirunOptins,lirunIndex),ljxdFilterd))
 
     #险种大类描述 筛选
     xianzhongIndex = row0.index('险种大类')
@@ -40,6 +48,8 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     #names=['短期费补医疗健康','短期普疾健康','短期定返医疗健康','短期重疾健康']
     xianzhongOptions=['18','17','19','16']
     xianzhongFilterd =  list(filter(outer_filter(xianzhongOptions,xianzhongIndex),lirunFilterd))
+
+    ljxdDQFilterd = list(filter(outer_filter(xianzhongOptions,xianzhongIndex),ljxdLRFilterd))
 
     #先map取每一行期间借方，期间贷方之和list
     rowCollect = map(rowSum,xianzhongFilterd)
@@ -50,6 +60,10 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     #本年保费收入 G6
     G6 =  sum(list(map(qimo,xianzhongFilterd)))
     resultDict['G6'] = G6 
+
+    #累计新单规模-短期险（期末余额）
+    T6 = sum(list(map(qimo,ljxdDQFilterd)))
+    resultDict['T6'] = T6 
 
     #短期健康险 期缴
     #缴费方式index
@@ -126,6 +140,11 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     J7 = Decimal(str(G7)) + Decimal(str(yiwaiXQY))
     resultDict['J7'] = J7
 
+    # 累计新单
+    leijiYYFilterd = list(filter(outer_filter(yiwaiOptins,xianzhongIndex),ljxdLRFilterd))
+    T7=sum(list(map(qimo,leijiYYFilterd)))
+    resultDict['T7'] = T7
+
 
     ######################   一般寿险  ###################
     #普通定期寿险：1，普通两全寿险：2，普通年金寿险：23，普通养老年金寿险：25，普通终生寿险：3，长期定返医疗健康：13，长期普疾健康：11,长期重疾健康：10
@@ -169,6 +188,11 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     J8 = Decimal(str(yibanY)) + Decimal(str(yibanXQY))
     resultDict['J8'] = J8
 
+    # 累计新单
+    leijiYBFilterd = list(filter(outer_filter(putongOptins,xianzhongIndex),ljxdLRFilterd))
+    T8=sum(list(map(qimo,leijiYBFilterd)))
+    resultDict['T8'] = T8
+
 
     ##################################   分红类保险（银保才有）###################
     # 分红两全寿险:4,分红年金寿险:6 
@@ -205,6 +229,11 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     J9 = Decimal(str(G9)) + Decimal(str(fhXQY))
     resultDict['J9'] = J9
 
+    # 累计新单
+    leijiFHFilterd = list(filter(outer_filter(fenhongOptions,xianzhongIndex),ljxdLRFilterd))
+    T9=sum(list(map(qimo,leijiFHFilterd)))
+    resultDict['T9'] = T9
+
 
     ############################  万能寿险  ######################
     wnOptions=['7']
@@ -239,8 +268,13 @@ def compute(worksheet,lirunType,companyCode = '1900'):
     J10 = Decimal(str(G10)) + Decimal(str(wnXQY))
     resultDict['J10'] = J10
 
+    # 累计新单
+    leijiWNFilterd = list(filter(outer_filter(wnOptions,xianzhongIndex),ljxdLRFilterd))
+    T10=sum(list(map(qimo,leijiWNFilterd)))
+    resultDict['T10'] = T10
+
     #计算各种小计
-    columns = ['C','D','E','F','G','H','I','J']
+    columns = ['C','D','E','F','G','H','I','J','T']
     rows = [6,7,8,9,10,11]
     for column in columns:
         aTotal = Decimal('0')
