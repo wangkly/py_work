@@ -1,8 +1,11 @@
 from tkinter import *
 import tkinter.filedialog
+from tkinter import ttk
+import tkinter.messagebox
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from main import entry
+import os
 
 root = Tk()
 root.title('徐二狗专用')
@@ -11,26 +14,43 @@ root.geometry('500x300')
 targetWb = None
 destnation = None
 submitting = False
+gongsi = None
 
 def startwork(name):
     global targetWb
     global submitting
+    global gongsi
     print('submitting',submitting)
     if submitting:
         print('正在执行')
         return
     submitting = True
-    print('name',name)
-    result  = entry(targetWb,destnation,name)
+    if gongsi == None:
+        gongsi='1900'
+    print('gongsi==>',gongsi)
+    result  = entry(targetWb,destnation,name,gongsi)
     if result == 1:
-        labe2 = Label(root,text="处理成功")
-        labe2.pack()
+        tkinter.messagebox.showinfo(title='处理成功',message='处理成功')
+        # labe2 = Label(root,text="处理成功")
+        # labe2.pack()
         submitting = False
+        os._exit(0)
 
 def placeBtns(item):
     button = Button(root,text=item,command=lambda : startwork(item))
     button.pack()
     return
+
+def combo(*args):
+    global gongsi
+    print(comboxlist.get())
+    code = comboxlist.get()
+    if code == '江苏':
+        gongsi = '-1'
+    else:
+        gongsi = code    
+    pass
+
 
 def cmd():
     global targetWb
@@ -49,6 +69,17 @@ def cmd2():
     destnation = tkinter.filedialog.askopenfilename()
     label3 = Label(root,text='模板文件路径：'+str(destnation))
     label3.pack()
+
+
+label1=Label(root,text="选择机构")
+label1.pack()
+#加一个下拉框选择要处理的公司
+comvalue = tkinter.StringVar()
+comboxlist = ttk.Combobox(root,textvariable=comvalue)
+comboxlist["values"]=("1900","1902","1903","1904","1999","江苏")
+comboxlist.current(0)
+comboxlist.bind("<<ComboboxSelected>>",combo)
+comboxlist.pack()
 
 btn2 = Button(root,text="第一步：选择要生成文件的模板",command=cmd2)
 btn2.pack()
