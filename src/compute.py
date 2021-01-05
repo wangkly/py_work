@@ -147,8 +147,8 @@ def compute(worksheet,lirunType,companyCode = '1900'):
 
 
     ######################   一般寿险  ###################
-    #普通定期寿险：1，普通两全寿险：2，普通年金寿险：23，普通养老年金寿险：25，普通终生寿险：3，长期定返医疗健康：13，长期普疾健康：11,长期重疾健康：10
-    putongOptins=['1','2','23','25','3','13','11','10']
+    #普通定期寿险：1，普通两全寿险：2，普通年金寿险：23，普通养老年金寿险：25，普通终生寿险：3，长期定返医疗健康：13，长期普疾健康：11,长期重疾健康：10,长期费补医疗健康：12
+    putongOptins=['1','2','23','25','3','13','11','10','12']
     yibanFilterd = list(filter(outer_filter(putongOptins,xianzhongIndex),lirunFilterd))
 
     yibanTotal = sum(list(map(rowSum,yibanFilterd)))
