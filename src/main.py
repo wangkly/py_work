@@ -11,7 +11,7 @@ from write_file import writeFile
 # template = load_workbook('./src/template.xlsx')
 
 def entry(workbook,dest,name,gongsi):
-    codeDict={'1900':'南京','1902':'盐城','1903':'南通','1904':'无锡','1999':'苏州','-1':'江苏'}
+    codeDict={'1900':'南京','1902':'盐城','1903':'南通','1904':'无锡','1905':'徐州','1906':'常州','1999':'苏州','-1':'江苏'}
     worksheet = workbook[str(name)]
     template = load_workbook(str(dest))
     #保费收入（正的就是负的，负的就是正的）

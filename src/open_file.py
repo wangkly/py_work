@@ -76,7 +76,7 @@ label1.pack()
 #加一个下拉框选择要处理的公司
 comvalue = tkinter.StringVar()
 comboxlist = ttk.Combobox(root,textvariable=comvalue)
-comboxlist["values"]=("1900","1902","1903","1904","1999","江苏")
+comboxlist["values"]=("1900","1902","1903","1904","1905","1906","1999","江苏")
 comboxlist.current(0)
 comboxlist.bind("<<ComboboxSelected>>",combo)
 comboxlist.pack()
