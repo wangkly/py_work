@@ -10,9 +10,10 @@ from write_file import writeFile
 # wb = load_workbook('./src/辅助余额表.xlsx')
 # template = load_workbook('./src/template.xlsx')
 
-def entry(workbook,dest,name,gongsi):
-    codeDict={'1900':'南京','1902':'盐城','1903':'南通','1904':'无锡','1905':'徐州','1906':'常州','1999':'苏州','-1':'江苏'}
-    worksheet = workbook[str(name)]
+def entry(worksheet,dest,name,gongsi,sheetName='sheet'):
+    # codeDict={'1900':'南京','1902':'盐城','1903':'南通','1904':'无锡','1905':'徐州','1906':'常州','1999':'苏州','-1':'江苏'}
+    # worksheet = workbook[str(name)]
+    getcontext().prec = 28
     template = load_workbook(str(dest))
     #保费收入（正的就是负的，负的就是正的）
     d1 = compute(worksheet,['PC10'],gongsi)
@@ -32,7 +33,7 @@ def entry(workbook,dest,name,gongsi):
 
 
     #计算合计
-    targetSheet = template['南京'] #ws
+    targetSheet = template['target'] #ws
     # targetSheet = template[str(gongsi)] #ws
     columns = list(string.ascii_uppercase[2:16])
     columns.append('T')
@@ -73,13 +74,16 @@ def entry(workbook,dest,name,gongsi):
     Q26 = ((Decimal(str(targetSheet['L20'].value)) + Decimal(str(targetSheet['L21'].value)))/ (Decimal(str(targetSheet['J20'].value)) + Decimal(str(targetSheet['J21'].value)))) if targetSheet['J20'].value != 0 and targetSheet['J21'].value != 0 else 0
     targetSheet['Q26'] = str(Q26 * Decimal(100))+'%'
 
-    template.active.title=codeDict[str(gongsi)]
+    template.active.title= sheetName
+    
+    filter = template['filter']
+    template.remove(filter)
 
-    template.save('test.xlsx')
+    template.save(name+'-'+sheetName+'.xlsx')
 
     # for k,v in d6.items():
     #     print(k,v)
-    print('结束')
+    print(name+sheetName+'结束')
     return 1
 
 # entry(wb,'10月')
@@ -87,23 +91,17 @@ def entry(workbook,dest,name,gongsi):
 
 def outerEntry(targetWb, destnation, keys, dict, name):
     worksheet = targetWb[str(name)]  # 辅助余额表数据源
-    entry(targetWb, destnation, name, 1900)  # 每个公司对应的数据
-    wb = Workbook()
+    # wb = Workbook()
     # key 是公司代码
     for key in keys:
-        pass
         # ws = wb.create_sheet(dict[key])
-        # template = entry(targetWb, destnation, name, key, dict[key])  # 每个公司对应的数据
-        # print('template==>',template)
-        # template.active.title = dict[key]
-        # template.save('test-'+dict[key]+'.xlsx')
+        entry(worksheet, destnation, name, str(key), dict[key])  # 每个公司对应的数据
 
         # 把对应数据拷贝到 ws 中
         # for row in targetSheet:
         #     for cell in row:
         #         ws[cell.coordinate].value = cell.value
-
-        # wb.save('test.xlsx')
+        # wb.save('test-all.xlsx') #样式错乱了
 
     print('结束')
     return 1

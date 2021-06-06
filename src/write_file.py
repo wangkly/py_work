@@ -3,7 +3,7 @@ from openpyxl import Workbook
 from decimal import *
 
 def writeFile(targetWb,data,factor=0):
-    nanjing =  targetWb['南京']
+    nanjing =  targetWb['target']
     for k,v in data.items():
         code = k[0:1] #第一个字符 excel列
         num = k[1:] #剩余字符 excel 行

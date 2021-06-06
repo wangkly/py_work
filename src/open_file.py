@@ -29,7 +29,8 @@ def startwork(name):
     if gongsi == None:
         gongsi='1900'
     print('gongsi==>',gongsi)
-    result  = entry(targetWb,destnation,name,gongsi)
+    worksheet = targetWb[str(name)] 
+    result  = entry(worksheet,destnation,name,gongsi,gongsi)
     if result == 1:
         tkinter.messagebox.showinfo(title='处理成功',message='处理成功')
         # labe2 = Label(root,text="处理成功")
@@ -66,7 +67,7 @@ def startUseDefaultWork(name):
 
 
 def placeBtns(item):
-    button = Button(root,text=item,command=lambda : startwork(item))
+    button = Button(root,text=item,command=lambda : startUseDefaultWork(item))
     button.pack()
     return
 
@@ -100,17 +101,17 @@ def cmd2():
     label3.pack()
     
 
-label1=Label(root,text="选择机构")
-label1.pack()
+# label1=Label(root,text="选择机构")
+# label1.pack()
  
 
-#加一个下拉框选择要处理的公司
-comvalue = tkinter.StringVar()
-comboxlist = ttk.Combobox(root,textvariable=comvalue)
-comboxlist["values"]=("1900","1902","1903","1904","1905","1906","1999","江苏")
-comboxlist.current(0)
-comboxlist.bind("<<ComboboxSelected>>",combo)
-comboxlist.pack()
+# #加一个下拉框选择要处理的公司
+# comvalue = tkinter.StringVar()
+# comboxlist = ttk.Combobox(root,textvariable=comvalue)
+# comboxlist["values"]=("1900","1902","1903","1904","1905","1906","1999","江苏")
+# comboxlist.current(0)
+# comboxlist.bind("<<ComboboxSelected>>",combo)
+# comboxlist.pack()
 
 btn2 = Button(root,text="第一步：选择要生成文件的模板",command=cmd2)
 btn2.pack()
