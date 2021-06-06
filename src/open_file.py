@@ -5,6 +5,7 @@ import tkinter.messagebox
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from main import entry
+from main import outerEntry
 import os
 
 root = Tk()
@@ -17,7 +18,7 @@ submitting = False
 gongsi = None
 
 def startwork(name):
-    global targetWb
+    global targetWb #辅助余额表
     global submitting
     global gongsi
     print('submitting',submitting)
@@ -35,6 +36,34 @@ def startwork(name):
         # labe2.pack()
         submitting = False
         os._exit(0)
+
+
+
+def startUseDefaultWork(name):
+    global targetWb #辅助余额表
+    global submitting
+    destWb = load_workbook(str(destnation))
+    if submitting:
+        print('正在执行')
+        return
+    submitting = True
+    sheet = destWb["filter"]
+    dict={}
+    keys=[]
+    for row in sheet.rows:
+        K,V = row
+        keys.append(K.value)
+        dict[K.value] = V.value
+        # xx='{\''+K.value+'\''+":'"+V.value+'\'}'
+        # dict.update(eval(xx))
+    result = outerEntry(targetWb,destnation,keys,dict,name)
+    if result == 1:
+        tkinter.messagebox.showinfo(title='处理成功',message='处理成功')
+        # labe2 = Label(root,text="处理成功")
+        # labe2.pack()
+        submitting = False
+        os._exit(0)
+
 
 def placeBtns(item):
     button = Button(root,text=item,command=lambda : startwork(item))
@@ -69,10 +98,12 @@ def cmd2():
     destnation = tkinter.filedialog.askopenfilename()
     label3 = Label(root,text='模板文件路径：'+str(destnation))
     label3.pack()
-
+    
 
 label1=Label(root,text="选择机构")
 label1.pack()
+ 
+
 #加一个下拉框选择要处理的公司
 comvalue = tkinter.StringVar()
 comboxlist = ttk.Combobox(root,textvariable=comvalue)

@@ -83,3 +83,27 @@ def entry(workbook,dest,name,gongsi):
     return 1
 
 # entry(wb,'10月')
+
+
+def outerEntry(targetWb, destnation, keys, dict, name):
+    worksheet = targetWb[str(name)]  # 辅助余额表数据源
+    entry(targetWb, destnation, name, 1900)  # 每个公司对应的数据
+    wb = Workbook()
+    # key 是公司代码
+    for key in keys:
+        pass
+        # ws = wb.create_sheet(dict[key])
+        # template = entry(targetWb, destnation, name, key, dict[key])  # 每个公司对应的数据
+        # print('template==>',template)
+        # template.active.title = dict[key]
+        # template.save('test-'+dict[key]+'.xlsx')
+
+        # 把对应数据拷贝到 ws 中
+        # for row in targetSheet:
+        #     for cell in row:
+        #         ws[cell.coordinate].value = cell.value
+
+        # wb.save('test.xlsx')
+
+    print('结束')
+    return 1
